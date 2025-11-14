@@ -1,9 +1,9 @@
-name: 'test' 
+name: 'devcontainer-build' 
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
     branches:
-      - dev-container-tests
+      - main
 
 jobs:
   build:
