@@ -28,8 +28,7 @@ jobs:
           cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
           push: always
           # Change this to be your CI task/script
-          runCmd: ./dev-setup.sh && cat ./.dev-setup/dev-setup-venv-pip.log
-
+          runCmd: ./dev-setup.sh
       - name: linting and format
         uses: devcontainers/ci@v0.3
         with:
