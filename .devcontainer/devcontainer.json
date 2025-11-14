@@ -5,11 +5,13 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:noble",
 	"features": {
-		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "13.3.0"
+		},
 		"ghcr.io/devcontainers-extra/features/pulumi:1": {},
 		"ghcr.io/devcontainers-extra/features/ruff:1": {}
 	},
-	"postCreateCommand": "pip install -r requirements.txt"
+	// "postCreateCommand": "./dev-setup.sh"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
