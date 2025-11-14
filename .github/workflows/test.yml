@@ -35,6 +35,5 @@ jobs:
         with:
           # Change this to point to your image name
           cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
-          push: always
           # Change this to be your CI task/script
           runCmd: ruff format --check --diff
