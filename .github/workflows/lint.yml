@@ -23,7 +23,7 @@ jobs:
           # Change this to point to your image name
           cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
           # Change this to be your CI task/script
-          runCmd: ruff format --check --diff\
+          runCmd: ruff format --check --diff
 
       - name: build docs
         uses: devcontainers/ci@v0.3
