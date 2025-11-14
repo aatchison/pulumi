@@ -30,6 +30,7 @@ jobs:
           # Change this to be your CI task/script
           runCmd: ./dev-setup.sh
   lint:
+    runs-on: ubuntu-latest
     steps:
       - name: linting and format
         uses: devcontainers/ci@v0.3
