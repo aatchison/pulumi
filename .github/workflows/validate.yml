@@ -1,35 +1,70 @@
 name: 'validate' 
-on: # rebuild any PRs and main branch changes
-  pull_request:
+
+concurrency:
+  group: validate
+  cancel-in-progress: true
+
+on:
   push:
     branches:
+      - "**"
+      - "!main"
+  pull_request:
+    types:
+      - edited
+      - opened
+      - ready_for_review
+      - reopened
+      - synchronize
+
+permissions:
+  contents: read
+
 jobs:
-  validate:
+  # This job detects which parts of the repo have been changed, setting future jobs up for conditional behavior.
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      docs: ${{ steps.check.outputs.docs }}
+      tb_pulumi: ${{ steps.check.outputs.tb_pulumi }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: check
+        with:
+          filters: |
+            tb_pulumi:
+              - 'tb_pulumi/**'
+              - 'pyproject.toml'
+            docs:
+              - 'tb_pulumi/**.py'
+              - 'docs/**'
+
+  # Run Ruff against tb_pulumi. Fail on format errors or failed sanity checks.
+  lint:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.tb_pulumi == 'true'
     steps:
       - name: Checkout (GitHub)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2 
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: linting and format
+      - name: Run Ruff linter
         uses: devcontainers/ci@v0.3
         with:
-          # Change this to point to your image name
           cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
-          # Change this to be your CI task/script
           runCmd: ruff format --check --diff
-
+          
+  # Attempt to build the documentation. Fail if there are errors or warnings.
+  build_docs:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    if: needs.detect-changes.outputs.docs == 'true'
+    steps:
       - name: build docs
         uses: devcontainers/ci@v0.3
         with:
-          # Change this to point to your image name
           cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
-          # Change this to be your CI task/script
           runCmd: ./build-docs.sh
           
