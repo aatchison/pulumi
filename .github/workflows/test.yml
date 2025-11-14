@@ -20,11 +20,21 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and run Dev Container task
+      - name: Build and cache devcontainer
         uses: devcontainers/ci@v0.3
         with:
           # Change this to point to your image name
           imageName: ghcr.io/aatchison/pulumi/cached-devcontainer
+          cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
+          push: always
           # Change this to be your CI task/script
-          runCmd: |
-            ls
+          runCmd: ./dev-setup.sh
+
+      - name: linting and format
+        uses: devcontainers/ci@v0.3
+        with:
+          # Change this to point to your image name
+          cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
+          push: always
+          # Change this to be your CI task/script
+          runCmd: ruff format --check --diff
