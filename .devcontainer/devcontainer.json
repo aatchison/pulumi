@@ -8,7 +8,8 @@
 		"ghcr.io/devcontainers/features/python:1": {},
 		"ghcr.io/devcontainers-extra/features/pulumi:1": {},
 		"ghcr.io/devcontainers-extra/features/ruff:1": {}
-	}
+	},
+	"postCreateCommand": "pip install -r requirements.txt"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
