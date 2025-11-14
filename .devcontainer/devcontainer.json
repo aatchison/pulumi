@@ -6,7 +6,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:noble",
 	"features": {
 		"ghcr.io/devcontainers/features/python:1": {
-			"version": "13.3.0"
+			// "version": "13.3.0"
 		},
 		"ghcr.io/devcontainers-extra/features/pulumi:1": {},
 		"ghcr.io/devcontainers-extra/features/ruff:1": {}
