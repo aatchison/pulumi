@@ -10,6 +10,9 @@ on:
     branches:
       - main
 
+env:
+  CACHE_IMAGE_PREFIX: ghcr.io/${{ github.repository }}
+
 jobs:
   # Build and cache devcontainer for faster CI stages
   devcontainer-build:
@@ -29,8 +32,8 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           # Change this to point to your image name
-          imageName: ghcr.io/aatchison/pulumi/cached-devcontainer
-          cacheFrom: ghcr.io/aatchison/pulumi/cached-devcontainer
+          imageName: ${{ env.CACHE_IMAGE_PREFIX }}/cached-devcontainer
+          cacheFrom: ${{ env.CACHE_IMAGE_PREFIX }}/cached-devcontainer
           push: always
           # Change this to be your CI task/script
           runCmd: ./dev-setup.sh
